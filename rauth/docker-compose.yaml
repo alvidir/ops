@@ -1,4 +1,16 @@
 services:
+    envoy:
+        container_name: rauth-envoy
+        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        restart: always
+        volumes:
+            - ./volumes/envoy:/etc/envoy:ro
+        security_opt:
+            label: disable
+        networks:
+            - shared
+        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
+    
     postgres:
         container_name: rauth-postgres
         image: docker.io/postgres:alpine3.15
@@ -19,6 +31,8 @@ services:
             - ./volumes/redis:/usr/local/etc/redis:ro
         security_opt:
             label: disable
+        networks:
+            - shared
         command: "redis-server /usr/local/etc/redis/redis.conf"
 
     rauth:
@@ -34,18 +48,6 @@ services:
             - redis
         env_file:
             - .env
-
-    envoy:
-        container_name: rauth-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
-        restart: always
-        volumes:
-            - ./volumes/envoy:/etc/envoy:ro
-        security_opt:
-            label: disable
-        depends_on: 
-            - rauth
-        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
 
 volumes:
     dbdata:

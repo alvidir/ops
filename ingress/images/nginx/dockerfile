@@ -26,7 +26,7 @@ env PROXY_PRIVATE_URI;\n\
 env PROXY_PASS_PRIVATE;\n\
 env PROXY_PASS_PUBLIC;\n\
 env PROXY_REDIRECT;\n\
-env REDIS_HOSTNAME;\n/' /usr/local/openresty/nginx/conf/nginx.conf
+env REDIS_DSN;\n/' /usr/local/openresty/nginx/conf/nginx.conf
 
 RUN mkdir /var/log/nginx
 
