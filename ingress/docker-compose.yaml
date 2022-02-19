@@ -1,0 +1,16 @@
+services:
+    nginx:
+        container_name: rauth-nginx
+        image: localhost/alvidir/rauth:1.0.0-nginx
+        restart: always
+        ports:
+            - 8080:80
+            - 8443:443
+        volumes:
+            - ./volumes/nginx:/etc/nginx/conf.d:ro
+        security_opt:
+            label: disable
+        depends_on: 
+            - redis
+        env_file:
+            - .env

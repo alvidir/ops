@@ -1,0 +1,51 @@
+services:
+    postgres:
+        container_name: rauth-postgres
+        image: docker.io/postgres:alpine3.15
+        restart: on-failure
+        volumes:
+            - ./volumes/postgres/dbdata:/data/postgres
+            - ./volumes/postgres/initdb:/docker-entrypoint-initdb.d
+        security_opt:
+            label: disable
+        env_file:
+            - .env
+            
+    redis:
+        container_name: rauth-redis
+        image: docker.io/redis:alpine3.15
+        restart: always
+        volumes:
+            - ./volumes/redis:/usr/local/etc/redis:ro
+        security_opt:
+            label: disable
+        command: "redis-server /usr/local/etc/redis/redis.conf"
+
+    rauth:
+        container_name: rauth-server
+        image: localhost/alvidir/rauth:1.0.0-server
+        restart: always
+        volumes:
+            - ./volumes/rauth/templates:/etc/rauth/smtp/templates:ro
+        security_opt:
+            label: disable
+        depends_on: 
+            - postgres
+            - redis
+        env_file:
+            - .env
+
+    envoy:
+        container_name: rauth-envoy
+        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        restart: always
+        volumes:
+            - ./volumes/envoy:/etc/envoy:ro
+        security_opt:
+            label: disable
+        depends_on: 
+            - rauth
+        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
+
+volumes:
+    dbdata:
