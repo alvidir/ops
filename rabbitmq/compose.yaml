@@ -1,0 +1,14 @@
+services:
+    rabbitmq:
+        container_name: rabbitmq
+        image: docker.io/rabbitmq:3.10.2-alpine
+        hostname: rabbitmq
+        restart: always
+        security_opt:
+            label: disable
+        networks:
+            - shared
+
+networks:
+    shared:
+        external: true

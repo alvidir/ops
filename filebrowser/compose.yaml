@@ -1,0 +1,68 @@
+services:
+    envoy:
+        container_name: filebrowser-envoy
+        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        restart: always
+        volumes:
+            - ./volume/envoy:/etc/envoy:ro
+        security_opt:
+            label: disable
+        depends_on: 
+            - filebrowser
+        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
+
+    nginx:
+        container_name: filebrowser-nginx
+        image: docker.io/nginx:1.22.0-alpine
+        restart: always
+        volumes:
+            - ./volume/static:/etc/static:ro
+            - ./volume/nginx:/etc/nginx/conf.d:ro
+        security_opt:
+            label: disable
+        depends_on:
+            - envoy
+        networks:
+            - shared
+        env_file:
+            - .env
+
+    mongo:
+        container_name: filebrowser-mongo
+        image: docker.io/mongo:latest
+        restart: always
+        volumes:
+            - dbdata:/data/db
+        security_opt:
+            label: disable
+        env_file:
+            - .env
+
+    filebrowser:
+        container_name: filebrowser-server
+        image: docker.io/alvidir/filebrowser:0.0.1
+        restart: always
+        security_opt:
+            label: disable
+        depends_on: 
+            - mongo
+        env_file:
+            - .env
+
+    mq-users:
+        container_name: filebrowser-mq-users
+        image: docker.io/alvidir/filebrowser:0.0.1-mq-users
+        restart: always
+        security_opt:
+            label: disable
+        networks:
+            - shared
+        env_file:
+            - .env
+
+networks:
+    shared:
+        external: true
+
+volumes:
+    dbdata:

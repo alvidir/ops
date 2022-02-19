@@ -1,0 +1,21 @@
+services:
+    nginx:
+        container_name: global-nginx
+        build: ./container/nginx
+        restart: always
+        ports:
+            - 8080:80
+            - 8443:443
+        volumes:
+            - ./volume/nginx:/etc/nginx/conf.d:ro
+            - ./volume/lua:/etc/lua:ro
+        security_opt:
+            label: disable
+        networks:
+            - shared
+        env_file:
+            - .env
+
+networks:
+    shared:
+        external: true

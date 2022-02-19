@@ -1,0 +1,14 @@
+methods:
+  - name: default   # default methods configuration for all endpoints listed in this file
+    enabled: true   # since non listed methods are disabled by default, enable all them
+    cached: true    # since cache is disabled by default, enable for all methods
+    timeout: 1h     # for how long a cached response is valid (10 minutes by default)
+    headers:        # custom headers for all the endpoints listed in this file
+      X_GLOBAL_HEADER: global_header
+      
+  - name: DELETE
+    enabled: false  # block all DELETE requests (405 - method not allowed)
+  - name: POST
+    enabled: false  # block all POST requests (405 - method not allowed)
+  - name: PUT
+    cached: false   # do not catch any PUT requests
