@@ -1,18 +1,18 @@
 services:
     nginx:
-        container_name: rauth-nginx
-        image: localhost/alvidir/rauth:1.0.0-nginx
+        container_name: ingress
+        image: docker.io/nginx:alpine
         restart: always
         ports:
             - 8080:80
             - 8443:443
         volumes:
-            - ./volumes/nginx:/etc/nginx/conf.d:ro
+            - ./volumes/nginx:/etc/nginx:ro
+            - ./volumes/public:/app/public:ro
+            - ./volumes/private:/app/private:ro
+            - logs:/etc/logs
         security_opt:
             label: disable
-        networks:
-            - shared
-        depends_on: 
-            - redis
-        env_file:
-            - .env
+
+volumes:
+    logs:
