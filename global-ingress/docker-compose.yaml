@@ -1,6 +1,6 @@
 services:
-    nginx:
-        container_name: ingress
+    global-ingress:
+        container_name: global-ingress
         image: docker.io/nginx:alpine
         restart: always
         ports:
@@ -8,11 +8,15 @@ services:
             - 8443:443
         volumes:
             - ./volumes/nginx:/etc/nginx:ro
-            - ./volumes/public:/app/public:ro
-            - ./volumes/private:/app/private:ro
             - logs:/etc/logs
         security_opt:
             label: disable
+        networks:
+            - shared
+
+networks:
+    shared:
+        external: true
 
 volumes:
     logs:
