@@ -1,4 +1,22 @@
 services:
+    nginx:
+        container_name: rauth-nginx
+        image: localhost/alvidir/rauth:1.0.0-nginx
+        restart: always
+        volumes:
+            - ./volumes/static:/etc/static:ro
+            - ./volumes/nginx:/etc/nginx/conf.d:ro
+            - ./volumes/lua:/etc/lua:ro
+        ports:
+            - 8080:8080
+            - 8443:8443
+        security_opt:
+            label: disable
+        networks:
+            - shared
+        env_file:
+            - .env
+
     envoy:
         container_name: rauth-envoy
         image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
@@ -48,6 +66,19 @@ services:
             - redis
         env_file:
             - .env
+
+    mailhog:
+        container_name: rauth-mailhog
+        image: mailhog/mailhog:latest
+        restart: always
+        ports:
+            - 8025:8025
+        security_opt:
+            label: disable
+
+networks:
+    shared:
+        external: true
 
 volumes:
     dbdata:

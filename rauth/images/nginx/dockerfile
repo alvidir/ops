@@ -22,10 +22,6 @@ RUN curl -LO https://github.com/cdbattags/lua-resty-jwt/archive/refs/tags/v0.2.3
 RUN sed -i '1s/^/\
 env JWT_HEADER;\n\
 env JWT_PUBLIC;\n\
-env PROXY_PRIVATE_URI;\n\
-env PROXY_PASS_PRIVATE;\n\
-env PROXY_PASS_PUBLIC;\n\
-env PROXY_REDIRECT;\n\
 env REDIS_DSN;\n/' /usr/local/openresty/nginx/conf/nginx.conf
 
 RUN mkdir /var/log/nginx
