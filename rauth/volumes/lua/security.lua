@@ -39,55 +39,55 @@ function _M:verify_token(token)
         }
     end
 
-    -- local public_key, err = self.b64.decode_base64url(self.public_key)
-    -- if not public_key then
-    --     return {
-    --         status=500,
-    --         error="could not decode public key: "..err
-    --     }
-    -- end
+    local public_key, err = self.b64.decode_base64url(self.public_key)
+    if not public_key then
+        return {
+            status=500,
+            error="could not decode public key: "..err
+        }
+    end
 
-    -- local claims = self.jwt:verify(self.public_key, jwt_token)
-    -- local verified = claims['verified']
+    local claims = self.jwt:verify(self.public_key, jwt_token)
+    local verified = claims['verified']
 
-    -- if not verified then
-    --     return {
-    --         status=498,
-    --         error="unverified token: "..claims['reason']
-    --     }
-    -- end
+    if not verified then
+        return {
+            status=498,
+            error="unverified token: "..claims['reason']
+        }
+    end
 
-    -- local payload = claims['payload']
-    -- if payload == nil then 
-    --     return {
-    --         status=498,
-    --         error="no payload found"
-    --     }
-    -- end
+    local payload = claims['payload']
+    if payload == nil then 
+        return {
+            status=498,
+            error="no payload found"
+        }
+    end
 
-    -- local jti = payload['jti']
-    -- if jti == nil then 
-    --     return {
-    --         status=498,
-    --         error="no token id (jti) in payload"
-    --     }
-    -- end
+    local jti = payload['jti']
+    if jti == nil then 
+        return {
+            status=498,
+            error="no token id (jti) in payload"
+        }
+    end
 
-    -- local redis_res, err = self.look_up_token_id(jti)
-    -- if redis_res == nil then
-    --     return {
-    --         status=498,
-    --         error="token is not valid: "..err
-    --     }
-    -- end
+    local redis_res, err = self.look_up_token_id(jti)
+    if redis_res == nil then
+        return {
+            status=498,
+            error="token is not valid: "..err
+        }
+    end
 
-    -- local user_id = payload['sub']
-    -- if user_id == nil then 
-    --     return {
-    --         status=498,
-    --         error="no subject (sub) in payload"
-    --     }
-    -- end
+    local user_id = payload['sub']
+    if user_id == nil then 
+        return {
+            status=498,
+            error="no subject (sub) in payload"
+        }
+    end
 
     return {
         status=200
