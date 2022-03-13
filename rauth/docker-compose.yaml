@@ -1,4 +1,16 @@
 services:
+    envoy:
+        container_name: rauth-envoy
+        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        restart: always
+        volumes:
+            - ./volumes/envoy:/etc/envoy:ro
+        ports:
+            - 3000:8080
+        security_opt:
+            label: disable
+        command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+
     nginx:
         container_name: rauth-nginx
         image: localhost/alvidir/rauth:1.0.0-nginx
@@ -7,27 +19,14 @@ services:
             - ./volumes/static:/etc/static:ro
             - ./volumes/nginx:/etc/nginx/conf.d:ro
             - ./volumes/lua:/etc/lua:ro
-        ports:
-            - 8080:8080
-            - 8443:8443
         security_opt:
             label: disable
+        depends_on:
+            - envoy
         networks:
             - shared
         env_file:
             - .env
-
-    envoy:
-        container_name: rauth-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
-        restart: always
-        volumes:
-            - ./volumes/envoy:/etc/envoy:ro
-        security_opt:
-            label: disable
-        networks:
-            - shared
-        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
     
     postgres:
         container_name: rauth-postgres
@@ -55,7 +54,7 @@ services:
 
     rauth:
         container_name: rauth-server
-        image: localhost/alvidir/rauth:1.0.0-server
+        image: docker.io/alvidir/rauth:1.0.0
         restart: always
         volumes:
             - ./volumes/rauth/templates:/etc/rauth/smtp/templates:ro
@@ -68,7 +67,7 @@ services:
             - .env
 
     mailhog:
-        container_name: rauth-mailhog
+        container_name: mailhog
         image: mailhog/mailhog:latest
         restart: always
         ports:

@@ -1,14 +1,14 @@
 services:
-    global-ingress:
-        container_name: global-ingress
-        image: localhost/alvidir/ingress:latest
+    nginx:
+        container_name: global-nginx
+        image: localhost/alvidir/nginx-lua:1.0.0
         restart: always
         ports:
             - 8080:80
             - 8443:443
         volumes:
-            - ./volumes/nginx:/etc/nginx:ro
-            - logs:/etc/logs
+            - ./volumes/nginx:/etc/nginx/conf.d:ro
+            - ./volumes/lua:/etc/lua:ro
         security_opt:
             label: disable
         networks:
@@ -17,6 +17,3 @@ services:
 networks:
     shared:
         external: true
-
-volumes:
-    logs:

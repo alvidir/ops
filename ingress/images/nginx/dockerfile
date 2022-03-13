@@ -2,7 +2,12 @@ FROM docker.io/openresty/openresty:alpine
 
 RUN apk update && \
     apk upgrade && \
-    apk add curl tar openssl
+    apk add curl openssl tar
+
+RUN curl -LO https://github.com/ledgetech/lua-resty-http/archive/refs/tags/v0.17.0-beta.1.tar.gz && \
+    tar -xvzf v0.17.0-beta.1.tar.gz && \
+    mv lua-resty-http-0.17.0-beta.1 /etc/lua-resty-http && \
+    rm -rf v0.17.0-beta.1.tar.gz
 
 RUN curl -LO https://github.com/fffonion/lua-resty-openssl/archive/refs/tags/0.8.5.tar.gz && \
     tar -xvzf 0.8.5.tar.gz && \
@@ -18,7 +23,5 @@ RUN curl -LO https://github.com/cdbattags/lua-resty-jwt/archive/refs/tags/v0.2.3
     tar -xvzf v0.2.3.tar.gz && \
     mv lua-resty-jwt-0.2.3 /etc/lua-resty-jwt && \
     rm -rf v0.2.3.tar.gz
-
-RUN mkdir /var/log/nginx
 
 RUN apk del curl tar
