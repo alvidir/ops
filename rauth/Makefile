@@ -13,10 +13,10 @@ push:
 	podman push ${REMOTE}/${REPO}/${PROJECT}:${VERSION}
 
 deploy:
-	podman-compose -f container-compose.yaml up -d
+	podman-compose -f compose.yaml up -d
 
 follow:
 	podman logs --follow --names rauth-server
 	
 undeploy:
-	podman-compose -f container-compose.yaml down
+	podman-compose -f compose.yaml down

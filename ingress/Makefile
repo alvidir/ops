@@ -13,10 +13,10 @@ push:
 	podman push ${REMOTE}/${REPO}/${PROJECT}:${VERSION}
 
 deploy:
-	podman-compose -f container-compose.yaml up
+	podman-compose -f compose.yaml up -d
 
 follow:
 	podman logs --follow --names global-nginx
 	
 undeploy:
-	podman-compose -f container-compose.yaml down
+	podman-compose -f compose.yaml down
