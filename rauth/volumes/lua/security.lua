@@ -81,8 +81,8 @@ function _M:verify_token(token)
         }
     end
 
-    local user_id = payload['sub']
-    if user_id == nil then 
+    local subject = payload['sub']
+    if subject == nil then 
         return {
             status=498,
             error="no subject (sub) in payload"
@@ -90,7 +90,8 @@ function _M:verify_token(token)
     end
 
     return {
-        status=200
+        status=200,
+        subject=subject,
     }
 
 end

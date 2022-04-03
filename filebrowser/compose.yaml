@@ -1,0 +1,20 @@
+services:
+    filebrowser:
+        container_name: filebrowser
+        image: docker.io/filebrowser/filebrowser:v2.21.1
+        restart: always
+        ports:
+            - 8035:80
+        volumes:
+            - root:/srv
+            - ./volumes/filebrowser/filebrowser.json:/.filebrowser.json
+        security_opt:
+            label: disable
+
+networks:
+    shared:
+        external: true
+
+volumes:
+    dbdata:
+    root:
