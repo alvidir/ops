@@ -6,7 +6,7 @@ function _M:verify_token(token)
     if token == nil then
         return {
             valid=false,
-            error="token not found"
+            error="token must be set"
         }
     end
 
