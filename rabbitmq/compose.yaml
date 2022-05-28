@@ -1,5 +1,5 @@
 services:
-    nginx:
+    rabbitmq:
         container_name: rabbitmq
         image: docker.io/rabbitmq:3.10.2-alpine
         hostname: rabbitmq
