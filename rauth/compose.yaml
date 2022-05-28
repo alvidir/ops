@@ -54,7 +54,7 @@ services:
 
     rauth:
         container_name: rauth-server
-        image: docker.io/alvidir/rauth:1.0.0
+        image: docker.io/alvidir/rauth:1.2.0
         restart: always
         volumes:
             - ./volumes/rauth/templates:/etc/rauth/smtp/templates:ro
