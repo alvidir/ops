@@ -4,7 +4,7 @@ services:
         image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
         restart: always
         volumes:
-            - ./volumes/envoy:/etc/envoy:ro
+            - ./volume/envoy:/etc/envoy:ro
         security_opt:
             label: disable
         depends_on: 
@@ -39,8 +39,6 @@ services:
         restart: always
         security_opt:
             label: disable
-        depends_on: 
-            - rabbitmq
         networks:
             - shared
         env_file:

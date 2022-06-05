@@ -6,7 +6,7 @@ REMOTE=docker.io
 all: build push deploy
 
 build:
-	podman build -t ${REPO}/${PROJECT}:${VERSION} -f ./images/nginx/containerfile .
+	podman build -t ${REPO}/${PROJECT}:${VERSION} -f ./container/nginx/containerfile .
 
 push:
 	podman tag localhost/${REPO}/${PROJECT}:${VERSION} ${REMOTE}/${REPO}/${PROJECT}:${VERSION}
