@@ -3,7 +3,7 @@ REPO=alvidir
 PROJECT=nginx-lua
 REMOTE=docker.io
 
-all: build push deploy
+release: build push
 
 build:
 	podman build -t ${REPO}/${PROJECT}:${VERSION} -f ./container/nginx/containerfile .

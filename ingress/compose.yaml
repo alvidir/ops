@@ -13,6 +13,8 @@ services:
             label: disable
         networks:
             - shared
+        env_file:
+            - .env
 
 networks:
     shared:

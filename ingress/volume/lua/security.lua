@@ -17,7 +17,7 @@ function _M:verify_token(token)
         },
     })
 
-    if not res then
+    if err ~= nil then
         return {
             valid=false,
             error="request failed: "..err

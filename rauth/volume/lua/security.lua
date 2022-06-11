@@ -14,7 +14,7 @@ function _M:look_up_token_id(jti)
     end
 
     local res, err = red:get(jti)
-    if not res then
+    if err ~= nil then
         return nil, err
     end
 
@@ -32,7 +32,7 @@ end
 
 function _M:verify_token(token)
     local jwt_token, err = self.b64.decode_base64url(token)
-    if not jwt_token then
+    if err ~= nil then
         return {
             status=400,
             error="could not decode token: "..err
@@ -40,17 +40,16 @@ function _M:verify_token(token)
     end
 
     local public_key, err = self.b64.decode_base64url(self.public_key)
-    if not public_key then
+    if err ~= nil then
         return {
             status=500,
             error="could not decode public key: "..err
         }
     end
 
-    local claims = self.jwt:verify(self.public_key, jwt_token)
-    local verified = claims['verified']
+    local claims = self.jwt:verify(public_key, jwt_token)
 
-    if not verified then
+    if not claims['verified'] then
         return {
             status=498,
             error="unverified token: "..claims['reason']
@@ -58,7 +57,7 @@ function _M:verify_token(token)
     end
 
     local payload = claims['payload']
-    if payload == nil then 
+    if payload == nil then
         return {
             status=498,
             error="no payload found"
@@ -66,15 +65,15 @@ function _M:verify_token(token)
     end
 
     local jti = payload['jti']
-    if jti == nil then 
+    if jti == nil then
         return {
             status=498,
             error="no token id (jti) in payload"
         }
     end
 
-    local redis_res, err = self.look_up_token_id(jti)
-    if redis_res == nil then
+    _, err = self.look_up_token_id(jti)
+    if err ~= nil then
         return {
             status=498,
             error="token is not valid: "..err
@@ -82,7 +81,7 @@ function _M:verify_token(token)
     end
 
     local subject = payload['sub']
-    if subject == nil then 
+    if subject == nil then
         return {
             status=498,
             error="no subject (sub) in payload"

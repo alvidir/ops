@@ -9,3 +9,9 @@ undeploy-all:
 	podman-compose -f filebrowser/compose.yaml down
 	podman-compose -f rauth/compose.yaml down
 	podman-compose -f rabbitmq/compose.yaml down
+
+deploy:
+	podman-compose -f $(pod)/compose.yaml up --remove-orphans -d
+
+undeploy:
+	podman-compose -f $(pod)/compose.yaml down
