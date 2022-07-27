@@ -1,7 +1,7 @@
 services:
     envoy:
         container_name: filebrowser-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        image: docker.io/envoyproxy/envoy-alpine:v1.21.5
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy:ro
@@ -29,7 +29,7 @@ services:
 
     mongo:
         container_name: filebrowser-mongo
-        image: docker.io/mongo:latest
+        image: docker.io/mongo:5.0.9
         restart: always
         volumes:
             - dbdata:/data/db

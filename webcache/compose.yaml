@@ -11,7 +11,7 @@ services:
 
     webcache:
         container_name: webcache-server
-        image: docker.io/alvidir/webcache:1.0.0
+        image: docker.io/alvidir/webcache:0.0.1
         restart: always
         volumes:
             - ./volume/webcache:/etc/webcache:ro

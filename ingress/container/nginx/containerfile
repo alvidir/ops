@@ -1,4 +1,4 @@
-FROM docker.io/alvidir/nginx-lua:latest
+FROM docker.io/alvidir/nginx-lua:0.0.1
 
 RUN sed -i '1s/^/\
 env JWT_HEADER;\n\

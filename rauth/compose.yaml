@@ -1,7 +1,7 @@
 services:
     envoy:
         container_name: rauth-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21-latest
+        image: docker.io/envoyproxy/envoy-alpine:v1.21.5
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy:ro
@@ -52,7 +52,7 @@ services:
 
     rauth:
         container_name: rauth-server
-        image: docker.io/alvidir/rauth:1.2.2
+        image: docker.io/alvidir/rauth:0.0.1
         restart: always
         volumes:
             - ./volume/rauth/templates:/etc/rauth/smtp/templates:ro
@@ -66,7 +66,7 @@ services:
 
     mailhog:
         container_name: mailhog
-        image: mailhog/mailhog:latest
+        image: mailhog/mailhog:v1.0.1
         restart: always
         ports:
             - 8025:8025
