@@ -1,0 +1,18 @@
+services:
+    mailhog:
+        container_name: mailhog
+        image: docker.io/mailhog/mailhog:v1.0.1
+        restart: always
+        ports:
+            - 8025:8025
+        networks:
+            - shared
+        security_opt:
+            label: disable
+
+networks:
+    shared:
+        external: true
+
+volumes:
+    dbdata:

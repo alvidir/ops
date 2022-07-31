@@ -1,6 +1,6 @@
 services:
     nginx:
-        container_name: global-nginx
+        container_name: ingress
         build: ./container/nginx
         restart: always
         ports:
