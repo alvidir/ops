@@ -40,7 +40,7 @@ services:
 
     filebrowser:
         container_name: filebrowser-server
-        image: docker.io/alvidir/filebrowser:0.0.2
+        image: docker.io/alvidir/filebrowser:0.0.1
         restart: always
         security_opt:
             label: disable
@@ -51,7 +51,7 @@ services:
 
     mq-worker:
         container_name: filebrowser-mq-worker
-        image: docker.io/alvidir/filebrowser:0.0.2-mq-worker
+        image: docker.io/alvidir/filebrowser:0.0.1-mq-worker
         restart: always
         security_opt:
             label: disable
