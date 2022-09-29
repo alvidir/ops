@@ -29,7 +29,7 @@ services:
 
     mongo:
         container_name: filebrowser-mongo
-        image: docker.io/mongo:5.0.9
+        image: docker.io/mongo:5.0.13
         restart: always
         volumes:
             - dbdata:/data/db
