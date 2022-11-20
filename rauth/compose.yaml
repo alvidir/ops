@@ -65,7 +65,7 @@ services:
 
     rauth-ui:
         container_name: rauth-ui
-        image: docker.io/alvidir/rauth-ui:0.0.1
+        image: docker.io/alvidir/rauth-ui:0.0.5
         restart: always
         security_opt:
             label: disable
