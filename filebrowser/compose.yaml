@@ -40,7 +40,7 @@ services:
 
     filebrowser:
         container_name: filebrowser-server
-        image: docker.io/alvidir/filebrowser:0.0.1
+        image: docker.io/alvidir/filebrowser:0.0.5
         restart: always
         security_opt:
             label: disable
