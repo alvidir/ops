@@ -1,8 +1,10 @@
-FROM docker.io/openresty/openresty:alpine
+FROM docker.io/bitnami/openresty:1.21.4-1
 
-RUN apk update && \
-    apk upgrade && \
-    apk add curl openssl tar
+USER root
+
+RUN apt update && \
+    apt upgrade && \
+    apt install -y curl openssl tar
 
 RUN curl -LO https://github.com/ledgetech/lua-resty-http/archive/refs/tags/v0.17.0-beta.1.tar.gz && \
     tar -xvzf v0.17.0-beta.1.tar.gz && \
@@ -24,4 +26,7 @@ RUN curl -LO https://github.com/cdbattags/lua-resty-jwt/archive/refs/tags/v0.2.3
     mv lua-resty-jwt-0.2.3 /etc/lua-resty-jwt && \
     rm -rf v0.2.3.tar.gz
 
-RUN apk del curl tar
+RUN curl -LO https://github.com/openresty/lua-resty-redis/archive/refs/tags/v0.29.tar.gz && \
+    tar -xvzf v0.29.tar.gz && \
+    mv lua-resty-redis-0.29 /etc/lua-resty-redis && \
+    rm -rf v0.29.tar.gz

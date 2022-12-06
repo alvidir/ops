@@ -1,6 +1,6 @@
-FROM docker.io/alvidir/nginx-lua:0.0.1
+FROM docker.io/alvidir/nginx-lua:0.0.2
 
 RUN sed -i '1s/^/\
 env JWT_HEADER;\n\
 env JWT_COOKIE;\n\
-env UID_HEADER;\n/' /usr/local/openresty/nginx/conf/nginx.conf
+env UID_HEADER;\n/' /opt/bitnami/openresty/nginx/conf/nginx.conf

@@ -13,7 +13,8 @@ function _M:look_up_token_id(jti)
         return nil, err
     end
 
-    local res, err = red:get(jti)
+    local session = "Session::"..jti
+    local res, err = red:get(session)
     if err ~= nil then
         return nil, err
     end
@@ -72,7 +73,7 @@ function _M:verify_token(token)
         }
     end
 
-    _, err = self.look_up_token_id(jti)
+    _, err = self:look_up_token_id(jti)
     if err ~= nil then
         return {
             status=498,

@@ -7,7 +7,7 @@ services:
             - 8080:80
             - 8443:443
         volumes:
-            - ./volume/nginx:/etc/nginx/conf.d:ro
+            - ./volume/nginx:/opt/bitnami/openresty/nginx/conf/server_blocks:ro
             - ./volume/lua:/etc/lua:ro
         security_opt:
             label: disable

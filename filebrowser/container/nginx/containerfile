@@ -1,0 +1,4 @@
+FROM docker.io/alvidir/nginx-lua:0.0.2
+
+RUN sed -i '1s/^/\
+env X-Uid;\n/' /opt/bitnami/openresty/nginx/conf/nginx.conf
