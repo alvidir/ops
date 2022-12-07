@@ -1,7 +1,7 @@
 services:
     envoy:
         container_name: filebrowser-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21.5
+        image: docker.io/envoyproxy/envoy-alpine:v1.21.6
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy:ro

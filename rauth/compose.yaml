@@ -1,7 +1,7 @@
 services:
     envoy:
         container_name: rauth-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21.5
+        image: docker.io/envoyproxy/envoy-alpine:v1.21.6
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy:ro
@@ -27,7 +27,7 @@ services:
     
     postgres:
         container_name: rauth-postgres
-        image: docker.io/postgres:alpine3.15
+        image: docker.io/postgres:alpine3.17
         restart: on-failure
         volumes:
             - ./volume/postgres/dbdata:/data/postgres
@@ -39,7 +39,7 @@ services:
             
     redis:
         container_name: rauth-redis
-        image: docker.io/redis:alpine3.15
+        image: docker.io/redis:alpine3.17
         restart: always
         volumes:
             - ./volume/redis:/usr/local/etc/redis:ro

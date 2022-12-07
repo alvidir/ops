@@ -1,7 +1,7 @@
 services:
     rabbitmq:
         container_name: rabbitmq
-        image: docker.io/rabbitmq:3.11.3-alpine
+        image: docker.io/rabbitmq:3.11.4-alpine
         hostname: rabbitmq
         restart: always
         security_opt:
