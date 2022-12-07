@@ -15,4 +15,4 @@ networks:
         external: true
 
 volumes:
-    dbdata:
+    dbdata:envsubst $EXISTING_VARS

@@ -63,19 +63,12 @@ services:
 
     rauth-ui:
         container_name: rauth-ui
-        image: docker.io/alvidir/rauth-ui:0.0.6
+        image: docker.io/alvidir/rauth-ui:0.0.7
         restart: always
         security_opt:
             label: disable
-
-    mailhog:
-        container_name: mailhog
-        image: docker.io/mailhog/mailhog:v1.0.1
-        restart: always
-        ports:
-            - 8025:8025
-        security_opt:
-            label: disable
+        env_file:
+            - .env
 
 networks:
     shared:
