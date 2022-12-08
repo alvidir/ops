@@ -33,7 +33,7 @@ function _M:verify_token(token)
 
     return {
         valid=true,
-        data=res.body,
+        uid=res.body:gsub("[\n\r]", ""),
     }
 end
 
