@@ -13,10 +13,10 @@ services:
 
     nginx:
         container_name: filebrowser-nginx
-        build: ./container/nginx
+        image: docker.io/nginx:1.23.2-alpine
         restart: always
         volumes:
-            - ./volume/nginx:/opt/bitnami/openresty/nginx/conf/server_blocks:ro
+            - ./volume/nginx:/etc/nginx/conf.d:ro
         security_opt:
             label: disable
         depends_on:
