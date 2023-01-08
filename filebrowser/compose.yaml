@@ -39,7 +39,7 @@ services:
 
     filebrowser:
         container_name: filebrowser-server
-        image: docker.io/alvidir/filebrowser:0.0.6
+        image: docker.io/alvidir/filebrowser:0.0.7
         restart: always
         security_opt:
             label: disable
@@ -50,7 +50,7 @@ services:
 
     filebrowser-ui:
         container_name: filebrowser-ui
-        image: docker.io/alvidir/filebrowser-ui:0.0.7
+        image: docker.io/alvidir/filebrowser-ui:0.0.8
         restart: always
         security_opt:
             label: disable
