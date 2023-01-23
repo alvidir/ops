@@ -1,0 +1,8 @@
+FROM docker.io/envoyproxy/envoy-alpine:v1.21.6
+
+RUN apk add gettext
+
+COPY script/start-envoy.sh /usr/bin/start-envoy.sh
+RUN chmod +x /usr/bin/start-envoy.sh
+
+ENTRYPOINT [ "start-envoy.sh" ]

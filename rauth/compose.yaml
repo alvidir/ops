@@ -1,13 +1,14 @@
 services:
     envoy:
         container_name: rauth-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21.6
+        image: docker.io/alvidir/envoy:0.0.1
         restart: always
         volumes:
-            - ./volume/envoy:/etc/envoy:ro
+            - ./volume/envoy:/etc/envoy/.config:ro
         security_opt:
             label: disable
-        command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+        env_file:
+            - .env
 
     nginx:
         container_name: rauth-nginx
@@ -49,7 +50,7 @@ services:
 
     rauth:
         container_name: rauth-server
-        image: docker.io/alvidir/rauth:0.0.6
+        image: docker.io/alvidir/rauth:0.0.8
         restart: always
         volumes:
             - ./volume/rauth/templates:/etc/rauth/smtp/templates:ro

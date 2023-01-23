@@ -1,15 +1,14 @@
 services:
     envoy:
         container_name: filebrowser-envoy
-        image: docker.io/envoyproxy/envoy-alpine:v1.21.6
+        image: docker.io/alvidir/envoy:0.0.1
         restart: always
         volumes:
-            - ./volume/envoy:/etc/envoy:ro
+            - ./volume/envoy:/etc/envoy/.config:ro
         security_opt:
             label: disable
-        depends_on: 
-            - filebrowser
-        command: /usr/local/bin/envoy --log-level debug -c /etc/envoy/envoy.yaml
+        env_file:
+            - .env
 
     nginx:
         container_name: filebrowser-nginx
@@ -59,7 +58,7 @@ services:
 
     agent:
         container_name: filebrowser-agent
-        image: docker.io/alvidir/filebrowser:0.0.6-agent
+        image: docker.io/alvidir/filebrowser:0.0.7-agent
         restart: always
         security_opt:
             label: disable
