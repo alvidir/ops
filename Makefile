@@ -1,27 +1,47 @@
-deploy-all:
-	podman-compose -f mailhog/compose.yaml up --remove-orphans -d
-	podman-compose -f rabbitmq/compose.yaml up --remove-orphans -d
-	podman-compose -f rauth/compose.yaml up --remove-orphans -d
-	podman-compose -f filebrowser/compose.yaml up --remove-orphans -d
-	podman-compose -f ingress/compose.yaml up --remove-orphans -d
+##########################################
+# 		     Dynamic targets 			 #
+##########################################
+# Exclude current and hidden directories
+FIND_PATH = . -mindepth 2 -not -path '*/\.*'
+# Define the list of subdirectories that contain a Makefile
+SUBDIRS := $(patsubst ./%/Makefile,%,$(shell find $(FIND_PATH) -name Makefile))
+TARGETS := $(SUBDIRS)
 
-undeploy-all:
-	podman-compose -f ingress/compose.yaml down
-	podman-compose -f filebrowser/compose.yaml down
-	podman-compose -f rauth/compose.yaml down
-	podman-compose -f rabbitmq/compose.yaml down
-	podman-compose -f mailhog/compose.yaml down
+.PHONY: all $(TARGETS) \
+		deploy $(addsuffix -deploy,$(TARGETS)) \
+		undeploy $(addsuffix -undeploy,$(TARGETS)) \
+		purge $(addsuffix -purge,$(TARGETS)) \
+		help
 
-deploy:
-	podman-compose -f $(pod)/compose.yaml up --remove-orphans -d
+$(TARGETS):
+	$(MAKE) -C $@
 
-undeploy:
-	podman-compose -f $(pod)/compose.yaml down
+images: $(addsuffix -images,$(SUBDIRS))
+
+$(addsuffix -images,$(TARGETS)):
+	@-$(MAKE) -C $(patsubst %-images,%,$@) images
+
+deploy: $(addsuffix -deploy,$(SUBDIRS))
+
+$(addsuffix -deploy,$(TARGETS)):
+	@-$(MAKE) -C $(patsubst %-deploy,%,$@) deploy
+
+undeploy: $(addsuffix -undeploy,$(SUBDIRS))
+
+$(addsuffix -undeploy,$(TARGETS)):
+	@-$(MAKE) -C $(patsubst %-undeploy,%,$@) undeploy
+
+purge: $(addsuffix -purge,$(SUBDIRS))
+
+$(addsuffix -purge,$(TARGETS)):
+	@-$(MAKE) -C $(patsubst %-purge,%,$@) purge
+
+##########################################
+# 		     Static targets 			 #
+##########################################
+help:
+	@echo "## Available targets:"
+	@echo $(TARGETS)
 
 follow:
-	podman logs --follow --names $(srv)
-
-purge:
-	podman image rm -f localhost/rauth_nginx
-	podman image rm -f localhost/filebrowser_nginx
-	podman image rm -f localhost/ingress_nginx
+	@podman logs --follow -t --names $(names)

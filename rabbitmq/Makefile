@@ -1,5 +1,5 @@
 deploy:
-	podman-compose -f compose.yaml up
+	@podman-compose -f compose.yaml up -d
 
 undeploy:
-	podman-compose -f compose.yaml down
+	@podman-compose -f compose.yaml down

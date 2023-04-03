@@ -36,9 +36,9 @@ services:
         env_file:
             - .env
 
-    filebrowser:
-        container_name: filebrowser-server
-        image: docker.io/alvidir/filebrowser:0.0.7
+    grpc:
+        container_name: filebrowser-grpc
+        image: docker.io/alvidir/filebrowser:0.0.9-grpc
         restart: always
         security_opt:
             label: disable
@@ -46,10 +46,25 @@ services:
             - mongo
         env_file:
             - .env
+        environment:
+            - SERVICE_PORT=${GRPC_SERVICE_PORT}
 
-    filebrowser-ui:
+    rest:
+        container_name: filebrowser-rest
+        image: docker.io/alvidir/filebrowser:0.0.9-rest
+        restart: always
+        security_opt:
+            label: disable
+        depends_on: 
+            - mongo
+        env_file:
+            - .env
+        environment:
+            - SERVICE_PORT=${REST_SERVICE_PORT}
+
+    ui:
         container_name: filebrowser-ui
-        image: docker.io/alvidir/filebrowser-ui:0.0.8
+        image: docker.io/alvidir/filebrowser-ui:0.0.9
         restart: always
         security_opt:
             label: disable
@@ -58,7 +73,7 @@ services:
 
     agent:
         container_name: filebrowser-agent
-        image: docker.io/alvidir/filebrowser:0.0.7-agent
+        image: docker.io/alvidir/filebrowser:0.0.9-agent
         restart: always
         security_opt:
             label: disable

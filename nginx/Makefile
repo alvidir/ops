@@ -2,17 +2,21 @@ ifndef host
 override host = docker.io
 endif
 
-ifndef owner
-override owner = alvidir
+ifndef scope
+override scope = alvidir
 endif
 
 ifndef version
 override version = latest
 endif
 
-build:
-	podman build -t $(owner)/nginx-lua:latest -f ./container/nginx-lua/containerfile .
+images:
+	@podman build -t $(scope)/nginx-lua:$(version) -f ./container/nginx-lua/containerfile .
+	@podman tag $(scope)/nginx-lua:$(version) $(host)/$(scope)/nginx-lua:$(version)
 
-release: build
-	podman tag $(owner)/nginx-lua:latest $(host)/$(owner)/nginx-lua:$(version)
-	podman push $(host)/$(owner)/nginx-lua:$(version)
+publish: images
+	@podman push $(host)/$(scope)/nginx-lua:$(version)
+
+purge:
+	@-podman image rm $(host)/$(scope)/nginx-lua:$(version)
+	@-podman image rm localhost/$(scope)/nginx-lua:$(version)

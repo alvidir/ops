@@ -2,17 +2,20 @@ ifndef host
 override host = docker.io
 endif
 
-ifndef owner
-override owner = alvidir
+ifndef scope
+override scope = alvidir
 endif
 
 ifndef version
 override version = latest
 endif
 
-build:
-	podman build -t $(owner)/envoy:latest -f ./container/envoy/containerfile .
+images:
+	@podman build -t $(scope)/envoy:$(version) -f ./container/envoy/containerfile .
+	@podman tag $(scope)/envoy:$(version) $(host)/$(scope)/envoy:$(version)
 
-release: build
-	podman tag $(owner)/envoy:latest $(host)/$(owner)/envoy:$(version)
-	podman push $(host)/$(owner)/envoy:$(version)
+publish: images
+	@podman push $(host)/$(scope)/envoy:$(version)
+
+purge:
+	@-podman image rm localhost/$(scope)/envoy:$(version)

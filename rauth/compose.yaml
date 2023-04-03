@@ -48,9 +48,9 @@ services:
             label: disable
         command: "redis-server /usr/local/etc/redis/redis.conf"
 
-    rauth:
-        container_name: rauth-server
-        image: docker.io/alvidir/rauth:0.0.8
+    grpc:
+        container_name: rauth-grpc
+        image: docker.io/alvidir/rauth:0.0.10-grpc
         restart: always
         volumes:
             - ./volume/rauth/templates:/etc/rauth/smtp/templates:ro
