@@ -1,40 +1,27 @@
 ##########################################
 # 		     Dynamic targets 			 #
 ##########################################
-# Exclude current and hidden directories
-FIND_PATH = . -mindepth 2 -not -path '*/\.*'
+# Define default target
+.DEFAULT_GOAL := all
+# Exclude current, hidden and undesired directories
+FIND_PATH = . -mindepth 2 \
+	-not -path '*/\.*' \
+	-not -path '*/webcache*'
 # Define the list of subdirectories that contain a Makefile
 SUBDIRS := $(patsubst ./%/Makefile,%,$(shell find $(FIND_PATH) -name Makefile))
 TARGETS := $(SUBDIRS)
 
-.PHONY: all $(TARGETS) \
-		deploy $(addsuffix -deploy,$(TARGETS)) \
-		undeploy $(addsuffix -undeploy,$(TARGETS)) \
-		purge $(addsuffix -purge,$(TARGETS)) \
-		help
+.PHONY: all $(TARGETS) clean $(addsuffix -clean,$(TARGETS)) help
 
 $(TARGETS):
 	$(MAKE) -C $@
 
-images: $(addsuffix -images,$(SUBDIRS))
+all: $(TARGETS)
 
-$(addsuffix -images,$(TARGETS)):
-	@-$(MAKE) -C $(patsubst %-images,%,$@) images
+clean: $(addsuffix -clean,$(SUBDIRS))
 
-deploy: $(addsuffix -deploy,$(SUBDIRS))
-
-$(addsuffix -deploy,$(TARGETS)):
-	@-$(MAKE) -C $(patsubst %-deploy,%,$@) deploy
-
-undeploy: $(addsuffix -undeploy,$(SUBDIRS))
-
-$(addsuffix -undeploy,$(TARGETS)):
-	@-$(MAKE) -C $(patsubst %-undeploy,%,$@) undeploy
-
-purge: $(addsuffix -purge,$(SUBDIRS))
-
-$(addsuffix -purge,$(TARGETS)):
-	@-$(MAKE) -C $(patsubst %-purge,%,$@) purge
+$(addsuffix -clean,$(TARGETS)):
+	@-$(MAKE) -C $(patsubst %-clean,%,$@) clean
 
 ##########################################
 # 		     Static targets 			 #
@@ -42,6 +29,5 @@ $(addsuffix -purge,$(TARGETS)):
 help:
 	@echo "## Available targets:"
 	@echo $(TARGETS)
-
-follow:
-	@podman logs --follow -t --names $(names)
+	@echo "## Available clean targets:"
+	@echo $(addsuffix -clean,$(TARGETS))

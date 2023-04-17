@@ -1,6 +1,24 @@
-FROM docker.io/alvidir/nginx-lua:0.0.2
+FROM docker.io/bitnami/openresty:1.21.4-1
+
+USER root
+
+RUN apt update && \
+    apt upgrade && \
+    apt install -y curl openssl tar
+
+RUN curl -LO https://github.com/ledgetech/lua-resty-http/archive/refs/tags/v0.17.0-beta.1.tar.gz && \
+    tar -xvzf v0.17.0-beta.1.tar.gz && \
+    mv lua-resty-http-0.17.0-beta.1 /etc/lua-resty-http && \
+    rm -rf v0.17.0-beta.1.tar.gz
+
+RUN curl -LO https://github.com/openresty/lua-cjson/archive/refs/tags/2.1.0.9.tar.gz && \
+    tar -xvzf 2.1.0.9.tar.gz && \
+    mv lua-cjson-2.1.0.9 /etc/lua-cjson && \
+    rm -rf 2.1.0.9.tar.gz
 
 RUN sed -i '1s/^/\
 env JWT_HEADER;\n\
 env JWT_COOKIE;\n\
-env UID_HEADER;\n/' /opt/bitnami/openresty/nginx/conf/nginx.conf
+env UID_HEADER;\n\
+env AUTH_REST_URI;\n\
+env UNAUTH_REDIRECT_URI;\n/' /opt/bitnami/openresty/nginx/conf/nginx.conf

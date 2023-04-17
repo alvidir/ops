@@ -1,7 +1,9 @@
 services:
     envoy:
         container_name: rauth-envoy
-        image: docker.io/alvidir/envoy:0.0.1
+        build:
+            context: ../envoy
+            dockerfile: ./container/envoy/containerfile
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy/.config:ro
@@ -12,11 +14,10 @@ services:
 
     nginx:
         container_name: rauth-nginx
-        build: ./container/nginx
+        image: docker.io/nginx:1.23.2-alpine
         restart: always
         volumes:
-            - ./volume/nginx:/opt/bitnami/openresty/nginx/conf/server_blocks:ro
-            - ./volume/lua:/etc/lua:ro
+            - ./volume/nginx:/etc/nginx/conf.d:ro
         security_opt:
             label: disable
         depends_on:
@@ -50,7 +51,7 @@ services:
 
     grpc:
         container_name: rauth-grpc
-        image: docker.io/alvidir/rauth:0.0.10-grpc
+        image: docker.io/alvidir/rauth:v0.0.10-grpc
         restart: always
         volumes:
             - ./volume/rauth/templates:/etc/rauth/smtp/templates:ro
@@ -61,8 +62,23 @@ services:
             - redis
         env_file:
             - .env
+        environment:
+            - SERVICE_PORT=${GRPC_SERVICE_PORT}
 
-    rauth-ui:
+    rest:
+        container_name: rauth-rest
+        image: docker.io/alvidir/rauth:v0.0.10-rest
+        restart: always
+        security_opt:
+            label: disable
+        depends_on: 
+            - redis
+        env_file:
+            - .env
+        environment:
+            - SERVICE_PORT=${REST_SERVICE_PORT}
+
+    ui:
         container_name: rauth-ui
         image: docker.io/alvidir/rauth-ui:0.0.7
         restart: always

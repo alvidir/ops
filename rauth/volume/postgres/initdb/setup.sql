@@ -10,6 +10,7 @@ CREATE TABLE Users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(64) NOT NULL UNIQUE,
     email VARCHAR(64) NOT NULL UNIQUE,
+    actual_email VARCHAR(64) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     meta_id INTEGER NOT NULL UNIQUE,
 
@@ -43,7 +44,7 @@ $BODY$
     COST 100;
 
 CREATE TRIGGER trg_prevent_update_secrets_data
-    BEFORE UPDATE OF data, user_id
+    BEFORE UPDATE OF id, name, data, user_id
     ON Secrets
     FOR EACH ROW
     EXECUTE PROCEDURE fn_prevent_update_secrets_data();

@@ -48,4 +48,4 @@ static_resources:
         - lb_endpoints:
             - endpoint:
                 address:
-                  socket_address: {address: rauth-grpc, port_value: ${SERVICE_PORT}}
+                  socket_address: {address: rauth-grpc, port_value: ${GRPC_SERVICE_PORT}}

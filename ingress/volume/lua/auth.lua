@@ -1,8 +1,9 @@
 local _M = {
-    http = require("resty.http")
+    http = require("resty.http"),
+    json = require("cjson"),
 }
 
-function _M:verify_token(token)
+function _M:get_session(token)
     if token == nil then
         return {
             valid=false,
@@ -10,7 +11,7 @@ function _M:verify_token(token)
         }
     end
 
-    local res, err = self.http.new():request_uri(self.url, {
+    local res, err = self.http.new():request_uri(self.url.."/session", {
         method = "GET",
         headers = {
             [self.target_header] = token,
@@ -24,7 +25,7 @@ function _M:verify_token(token)
         }
     end
 
-    if res.status ~= 200 then
+    if res.status ~= 202 then
         return {
             valid=false,
             error="status: "..res.status
@@ -33,7 +34,7 @@ function _M:verify_token(token)
 
     return {
         valid=true,
-        uid=res.body:gsub("[\n\r]", ""),
+        sub=self.json.new().decode(res.body)['sub'],
     }
 end
 

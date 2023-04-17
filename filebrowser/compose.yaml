@@ -1,7 +1,9 @@
 services:
     envoy:
         container_name: filebrowser-envoy
-        image: docker.io/alvidir/envoy:0.0.1
+        build:
+            context: ../envoy
+            dockerfile: ./container/envoy/containerfile
         restart: always
         volumes:
             - ./volume/envoy:/etc/envoy/.config:ro
@@ -38,7 +40,7 @@ services:
 
     grpc:
         container_name: filebrowser-grpc
-        image: docker.io/alvidir/filebrowser:0.0.9-grpc
+        image: docker.io/alvidir/filebrowser:v0.0.10-grpc
         restart: always
         security_opt:
             label: disable
@@ -51,7 +53,7 @@ services:
 
     rest:
         container_name: filebrowser-rest
-        image: docker.io/alvidir/filebrowser:0.0.9-rest
+        image: docker.io/alvidir/filebrowser:v0.0.10-rest
         restart: always
         security_opt:
             label: disable
@@ -62,23 +64,23 @@ services:
         environment:
             - SERVICE_PORT=${REST_SERVICE_PORT}
 
+    agent:
+        container_name: filebrowser-agent
+        image: docker.io/alvidir/filebrowser:v0.0.10-agent
+        restart: always
+        security_opt:
+            label: disable
+        depends_on:
+            - rabbitmq
+        env_file:
+            - .env
+
     ui:
         container_name: filebrowser-ui
         image: docker.io/alvidir/filebrowser-ui:0.0.9
         restart: always
         security_opt:
             label: disable
-        env_file:
-            - .env
-
-    agent:
-        container_name: filebrowser-agent
-        image: docker.io/alvidir/filebrowser:0.0.9-agent
-        restart: always
-        security_opt:
-            label: disable
-        depends_on:
-            - rabbitmq
         env_file:
             - .env
 

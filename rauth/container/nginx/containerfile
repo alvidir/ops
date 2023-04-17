@@ -1,6 +1,0 @@
-FROM docker.io/alvidir/nginx-lua:0.0.2
-
-RUN sed -i '1s/^/\
-env JWT_HEADER;\n\
-env JWT_PUBLIC;\n\
-env REDIS_HOST;\n/' /opt/bitnami/openresty/nginx/conf/nginx.conf
