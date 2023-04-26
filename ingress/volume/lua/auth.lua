@@ -11,7 +11,7 @@ function _M:get_session(token)
         }
     end
 
-    local res, err = self.http.new():request_uri(self.url.."/session", {
+    local res, err = self.http.new():request_uri(self.url, {
         method = "GET",
         headers = {
             [self.target_header] = token,
