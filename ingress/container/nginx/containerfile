@@ -2,10 +2,6 @@ FROM docker.io/bitnami/openresty:1.21.4-1
 
 USER root
 
-RUN apt update && \
-    apt upgrade && \
-    apt install -y curl openssl tar
-
 RUN curl -LO https://github.com/ledgetech/lua-resty-http/archive/refs/tags/v0.17.0-beta.1.tar.gz && \
     tar -xvzf v0.17.0-beta.1.tar.gz && \
     mv lua-resty-http-0.17.0-beta.1 /etc/lua-resty-http && \
